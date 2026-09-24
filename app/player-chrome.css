@@ -1,0 +1,157 @@
+/* =====================================================================
+   PLAYER CHROME — Grok/JW tarzı hafif oynatma katmanı (izole .pc- stilleri)
+   ===================================================================== */
+.bb-player-section .main-content { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+.bb-player-section .player-layout { display: block !important; padding: 0 !important; margin: 0 !important; gap: 0 !important; }
+.bb-player-section .video-wrapper {
+  position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 78vh;
+  background: #000; border-radius: 16px; overflow: hidden; outline: none;
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 30px 70px -25px rgba(0,0,0,0.9), 0 0 0 1px rgba(56,232,255,0.08), 0 0 60px -20px rgba(138,92,255,0.35);
+}
+.bb-player-section .video-wrapper.fullscreen-active { aspect-ratio: auto; max-height: none; height: 100vh; border-radius: 0; border: 0; }
+.bb-player-section .video-wrapper.pc-hide-cursor { cursor: none; }
+.bb-player-section .video-player { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+.pc-fade { position: absolute; left: 0; right: 0; pointer-events: none; z-index: 20; opacity: 0; transition: opacity .25s; }
+.pc-fade-top { top: 0; height: 90px; background: linear-gradient(180deg, rgba(0,0,0,0.65), transparent); }
+.pc-fade-bottom { bottom: 0; height: 120px; background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent); }
+.video-wrapper:has(.pc-controls.is-shown) .pc-fade { opacity: 1; }
+
+/* ÜST ŞERİT */
+.pc-top {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 12px 14px; opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.pc-top.is-shown { opacity: 1; pointer-events: auto; }
+.pc-top-left, .pc-top-right { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.pc-badge {
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px;
+  background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.16); backdrop-filter: blur(8px);
+  color: #f3f1fa; font: 700 10px/1 'Space Grotesk', system-ui, sans-serif; letter-spacing: 0.14em; white-space: nowrap;
+}
+.pc-chan { text-transform: uppercase; color: #cfc9e0; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+.pc-live { border-color: rgba(255,59,92,0.55); color: #ff8aa0; background: rgba(255,59,92,0.14); }
+.pc-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff3b5c; box-shadow: 0 0 8px #ff3b5c; animation: pc-pulse 1.4s infinite; }
+@keyframes pc-pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+.pc-quality { border-color: rgba(56,232,255,0.45); color: #38e8ff; background: rgba(56,232,255,0.10); }
+.pc-fps { color: #39ff88; border-color: rgba(57,255,136,0.35); }
+.pc-fps small { font-size: 8px; opacity: .8; margin-left: -2px; }
+
+.pc-icon {
+  width: 34px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;
+  background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.16); color: #f3f1fa; cursor: pointer; backdrop-filter: blur(8px);
+  transition: border-color .2s, color .2s, box-shadow .2s;
+}
+.pc-icon svg { width: 18px; height: 18px; }
+.pc-icon:hover { border-color: #38e8ff; color: #38e8ff; box-shadow: 0 0 14px rgba(56,232,255,0.35); }
+
+/* SESİ AÇ */
+.pc-unmute {
+  position: absolute; top: 50px; right: 14px; z-index: 35;
+  display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 14px; border-radius: 999px;
+  background: linear-gradient(135deg, #ff4fd8, #8a5cff); color: #fff; border: 0; cursor: pointer;
+  font: 700 11px/1 'Space Grotesk', system-ui, sans-serif; letter-spacing: 0.16em;
+  box-shadow: 0 8px 24px -8px rgba(255,79,216,0.7), 0 0 18px rgba(255,79,216,0.35);
+  animation: pc-in .25s ease-out;
+}
+.pc-unmute-ic svg { width: 16px; height: 16px; display: block; }
+@keyframes pc-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* ORTA PLAY */
+.pc-center {
+  position: absolute; inset: 0; z-index: 25; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 0; cursor: pointer;
+}
+.pc-ring {
+  width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(4,3,8,0.55); border: 2px solid #38e8ff; color: #38e8ff; backdrop-filter: blur(6px);
+  box-shadow: 0 0 0 6px rgba(56,232,255,0.10), 0 0 40px rgba(56,232,255,0.45); transition: transform .2s, box-shadow .2s;
+}
+.pc-ring svg { width: 34px; height: 34px; margin-left: 4px; }
+.pc-center:hover .pc-ring { transform: scale(1.06); box-shadow: 0 0 0 10px rgba(56,232,255,0.12), 0 0 56px rgba(56,232,255,0.6); }
+
+/* FORMAT ROZETİ */
+.pc-format {
+  position: absolute; left: 14px; bottom: 64px; z-index: 30;
+  padding: 5px 9px; border-radius: 6px; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.14);
+  color: #cfc9e0; font: 700 9px/1 'Space Grotesk', system-ui, sans-serif; letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+/* ALT BAR */
+.pc-controls {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 30; padding: 8px 12px 10px;
+  display: flex; flex-direction: column; gap: 8px; opacity: 0; pointer-events: none; transition: opacity .25s;
+}
+.pc-controls.is-shown { opacity: 1; pointer-events: auto; }
+.pc-progress { position: relative; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.16); cursor: pointer; }
+.pc-progress.is-live { cursor: default; }
+.pc-progress:hover { height: 6px; }
+.pc-buffered { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(255,255,255,0.28); border-radius: 4px; }
+.pc-played { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #38e8ff, #ff4fd8); border-radius: 4px; box-shadow: 0 0 10px rgba(56,232,255,0.5); }
+.pc-knob { position: absolute; top: 50%; width: 12px; height: 12px; border-radius: 50%; background: #fff; transform: translate(-50%, -50%); box-shadow: 0 0 10px rgba(56,232,255,0.7); }
+.pc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pc-grp { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.pc-grp-right { justify-content: flex-end; }
+.pc-btn {
+  height: 32px; min-width: 32px; padding: 0 6px; display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  border-radius: 8px; background: transparent; border: 1px solid transparent; color: #f3f1fa; cursor: pointer;
+  font: 700 10px/1 'Space Grotesk', system-ui, sans-serif; letter-spacing: 0.12em; transition: background .15s, color .15s, border-color .15s;
+}
+.pc-btn svg { width: 20px; height: 20px; }
+.pc-btn:hover { background: rgba(255,255,255,0.08); color: #38e8ff; }
+.pc-btn.is-on { color: #38e8ff; border-color: rgba(56,232,255,0.4); background: rgba(56,232,255,0.10); }
+.pc-btn:disabled { opacity: .45; cursor: not-allowed; }
+.pc-label { padding: 0 9px; }
+.pc-hq { color: #ffc857; }
+.pc-hq.is-on { color: #fff; border-color: rgba(255,170,0,0.7); background: linear-gradient(135deg, rgba(255,140,0,0.35), rgba(255,80,0,0.35)); box-shadow: 0 0 12px rgba(255,170,0,0.4); }
+
+.pc-vol { display: flex; align-items: center; }
+.pc-vol-slider { width: 0; overflow: hidden; transition: width .2s; display: flex; align-items: center; }
+.pc-vol:hover .pc-vol-slider, .pc-vol:focus-within .pc-vol-slider { width: 90px; padding: 0 6px; }
+.pc-vol-slider input { width: 100%; accent-color: #38e8ff; height: 4px; cursor: pointer; }
+.pc-time { font: 500 12px/1 'Space Grotesk', system-ui, sans-serif; color: #cfc9e0; letter-spacing: 0.04em; white-space: nowrap; padding: 0 6px; }
+.pc-live-tag { display: inline-block; padding: 3px 7px; border-radius: 5px; background: rgba(255,59,92,0.18); border: 1px solid rgba(255,59,92,0.5); color: #ff8aa0; font-weight: 700; font-size: 9px; letter-spacing: 0.16em; margin-right: 4px; }
+
+.pc-net {
+  display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 9px; border-radius: 999px;
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(56,232,255,0.25); color: #38e8ff;
+  font: 700 10px/1 'Space Grotesk', system-ui, sans-serif; letter-spacing: 0.14em; pointer-events: none; user-select: none;
+}
+.pc-net.is-off { color: #ff3b5c; border-color: rgba(255,59,92,0.4); }
+.pc-net-ic svg { width: 13px; height: 13px; display: block; }
+.pc-5g { font: italic 800 13px/1 Georgia, 'Times New Roman', serif; background: linear-gradient(180deg, #ffe9a8, #f5c542 45%, #c98f12); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* MENÜLER */
+.pc-menu-wrap { position: relative; }
+.pc-menu {
+  position: absolute; bottom: calc(100% + 10px); right: 0; min-width: 190px; z-index: 60; padding: 6px;
+  background: rgba(10,7,20,0.96); border: 1px solid rgba(255,255,255,0.14); border-radius: 12px;
+  box-shadow: 0 20px 50px -20px rgba(0,0,0,0.9), 0 0 0 1px rgba(56,232,255,0.06); backdrop-filter: blur(14px);
+  animation: pc-in .18s ease-out;
+}
+.pc-menu-title { padding: 6px 10px 8px; font: 700 9px/1 'Space Grotesk', system-ui, sans-serif; letter-spacing: 0.22em; color: #6f6890; text-transform: uppercase; }
+.pc-menu-item {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 9px 10px; border-radius: 8px; background: transparent; border: 0; color: #cfc9e0; cursor: pointer; text-align: left;
+  font: 600 12px/1 'Space Grotesk', system-ui, sans-serif;
+}
+.pc-menu-item small { color: #6f6890; font-weight: 500; }
+.pc-menu-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.pc-menu-item.is-active { color: #38e8ff; }
+.pc-dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); }
+.pc-menu-item.is-active .pc-dot { background: #38e8ff; border-color: #38e8ff; box-shadow: 0 0 8px #38e8ff; }
+.pc-menu-note { padding: 10px; color: #6f6890; font: 500 11px/1.4 'Space Grotesk', system-ui, sans-serif; }
+
+/* Küçük ekran (viewport 980 sabit olsa da tam ekran/PiP için) */
+@media (max-width: 640px) {
+  .pc-time { display: none; }
+  .pc-net { display: none; }
+  .pc-vol-slider { display: none; }
+  .pc-chan { display: none; }
+}
+
+/* Betzula şeridi — player altındaki video banner */
+.bb-player-section .shelby-strip { display: block; margin-top: 14px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.10); background: #000; max-height: 150px; }
+.bb-player-section .shelby-strip video { display: block; width: 100%; height: 150px; object-fit: cover; }

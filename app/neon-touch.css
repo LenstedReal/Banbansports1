@@ -1,0 +1,162 @@
+/* ============================================================
+   banbansports — NEON TOUCH (v3, yalnızca efekt katmanı)
+   Yerleşim, boyut, konum ve davranış DEĞİŞMEZ. Sadece: ince
+   cyan/magenta kenar + kontrollü dış/iç parıltı, cam yüzey,
+   mikro-nabız, hover bloom. Stüdyo ekipmanı gibi — RGB değil.
+   ============================================================ */
+
+:root {
+  --nt-edge-cyan: rgba(0, 229, 255, 0.28);
+  --nt-edge-pink: rgba(255, 0, 170, 0.26);
+  --nt-bloom-cyan: 0 0 0 1px rgba(0, 229, 255, 0.10), 0 0 22px -6px rgba(0, 229, 255, 0.45);
+  --nt-bloom-pink: 0 0 0 1px rgba(255, 0, 170, 0.10), 0 0 22px -6px rgba(255, 0, 170, 0.45);
+  --nt-inner: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 0 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Atmosfer: mevcut radyal glow'lara çok düşük opaklıkta lacivert/bordo derinlik + parçacıklar */
+.bb-shell::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(700px 380px at 20% 30%, rgba(30, 20, 90, 0.16), transparent 70%),
+    radial-gradient(640px 360px at 80% 65%, rgba(110, 10, 40, 0.14), transparent 70%),
+    radial-gradient(2px 2px at 12% 18%, rgba(0, 229, 255, 0.55), transparent 60%),
+    radial-gradient(1.5px 1.5px at 33% 72%, rgba(255, 0, 170, 0.45), transparent 60%),
+    radial-gradient(1.5px 1.5px at 58% 26%, rgba(0, 229, 255, 0.40), transparent 60%),
+    radial-gradient(2px 2px at 76% 44%, rgba(255, 255, 255, 0.28), transparent 60%),
+    radial-gradient(1.5px 1.5px at 88% 82%, rgba(0, 229, 255, 0.45), transparent 60%),
+    radial-gradient(1.5px 1.5px at 44% 90%, rgba(255, 0, 170, 0.35), transparent 60%);
+  animation: nt-drift 26s ease-in-out infinite alternate;
+}
+@keyframes nt-drift {
+  from { transform: translate3d(0, 0, 0); opacity: 0.85; }
+  to   { transform: translate3d(0, -14px, 0); opacity: 1; }
+}
+
+/* Paneller: koyu cam + ince ışıklı kenar + iç gölge (kalın neon YOK) */
+.pnl {
+  position: relative;
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: var(--nt-inner), 0 10px 30px -18px rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px) saturate(1.15);
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.pnl::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: linear-gradient(120deg, rgba(0, 229, 255, 0.05), transparent 38%, transparent 62%, rgba(255, 0, 170, 0.05));
+  mix-blend-mode: screen;
+}
+.pnl:hover { border-color: var(--nt-edge-cyan); box-shadow: var(--nt-inner), var(--nt-bloom-cyan), 0 10px 30px -18px rgba(0, 0, 0, 0.9); }
+.pnl-head { position: relative; }
+.pnl-head::after {
+  content: '';
+  position: absolute; left: 10px; right: 10px; bottom: -1px; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 229, 255, 0.55), rgba(0, 229, 255, 0.08) 45%, transparent 70%, rgba(255, 0, 170, 0.35));
+  opacity: 0.7;
+}
+
+/* Butonlar: kompakt neon, hover'da hafif bloom + parlaklık */
+.btn-neon, .btn-neon-cyan, .btn-neon-pink, .mp-lock-btn, .mp-skip-btn, .mp-ask-btn, .cc-btn, .control-btn {
+  transition: box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.22s ease, filter 0.22s ease, transform 0.18s ease;
+}
+.btn-neon:hover, .btn-neon-cyan:hover { box-shadow: var(--nt-bloom-cyan), 0 0 26px -8px rgba(0, 229, 255, 0.6); filter: brightness(1.12); }
+.btn-neon.b-pink:hover, .btn-neon-pink:hover { box-shadow: var(--nt-bloom-pink), 0 0 26px -8px rgba(255, 0, 170, 0.6); filter: brightness(1.12); }
+.control-btn:hover { filter: brightness(1.2) drop-shadow(0 0 6px rgba(0, 229, 255, 0.55)); }
+
+/* Canlı / durum noktaları: mikro nabız */
+.hd2-live-dot, .mc2-livedot, .bo2-live-dot, .movie-title-dot, .mp-ad-dot, .rail-soon-dot, .mc2-filter-dot {
+  box-shadow: 0 0 0 0 rgba(255, 0, 64, 0.55);
+  animation: nt-pulse 1.8s ease-out infinite;
+}
+@keyframes nt-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 0, 64, 0.55); }
+  70%  { box-shadow: 0 0 0 6px rgba(255, 0, 64, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 0, 64, 0); }
+}
+
+/* Etiketler: ince ışıklı kenar */
+.cin-tag { box-shadow: 0 0 12px -6px currentColor; }
+.bo2-live-badge { box-shadow: 0 0 14px -5px rgba(255, 0, 64, 0.7); }
+
+/* Sinema hero: kenarda çok düşük yoğunluklu ambient ışık */
+.cin2-hero { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 40px -18px rgba(255, 0, 170, 0.45); }
+.cin2-watch { box-shadow: var(--nt-bloom-pink); }
+
+/* ===== İKİNCİL PLAYER ===== */
+.movie-modal {
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.18),
+    0 0 48px -14px rgba(0, 229, 255, 0.45),
+    0 0 90px -30px rgba(255, 0, 170, 0.35),
+    0 30px 80px -20px rgba(0, 0, 0, 0.95);
+}
+.movie-modal-backdrop { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+
+/* Korumalı içerik kartı: cam yüzey + ince cyan kenar + iç gölge */
+.mp-lock-card {
+  background: linear-gradient(165deg, rgba(20, 14, 34, 0.78), rgba(8, 6, 16, 0.92)) !important;
+  border: 1px solid var(--nt-edge-cyan) !important;
+  box-shadow: var(--nt-inner), var(--nt-bloom-cyan), 0 24px 60px -24px rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  animation: nt-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes nt-rise { from { opacity: 0; transform: translateY(10px) scale(0.985); } to { opacity: 1; transform: none; } }
+.mp-lock-icon { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6)); animation: nt-flicker 6s linear infinite; }
+@keyframes nt-flicker { 0%, 96%, 100% { opacity: 1; } 97% { opacity: 0.72; } 98% { opacity: 1; } 99% { opacity: 0.85; } }
+.mp-lock-input {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.mp-lock-input:focus { box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 229, 255, 0.35), 0 0 16px -4px rgba(0, 229, 255, 0.5) !important; }
+.mp-lock-primary:not(:disabled):hover { box-shadow: 0 0 0 1px rgba(0, 255, 136, 0.25), 0 0 22px -6px rgba(0, 255, 136, 0.6) !important; filter: brightness(1.1); }
+.mp-lock-primary:disabled { opacity: 0.55; cursor: not-allowed; filter: saturate(0.6); }
+.mp-getpass-btn { box-shadow: var(--nt-bloom-pink); transition: box-shadow 0.22s ease, filter 0.22s ease; }
+.mp-getpass-btn:hover { box-shadow: var(--nt-bloom-pink), 0 0 26px -8px rgba(255, 0, 170, 0.7); filter: brightness(1.12); }
+.mp-lock-creds { box-shadow: var(--nt-inner), 0 0 18px -8px rgba(0, 229, 255, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+/* Turnstile kutusu — kart ritmine uyar */
+.mp-turnstile { min-height: 65px; display: flex; align-items: center; justify-content: center; width: 100%; }
+.mp-turnstile iframe { border-radius: 6px; }
+.mp-turnstile-wait {
+  font-family: var(--font-mono, monospace); font-size: 9.5px; letter-spacing: 1.6px; color: rgba(0, 229, 255, 0.6);
+  border: 1px dashed rgba(0, 229, 255, 0.25); border-radius: 6px; animation: nt-breathe 1.6s ease-in-out infinite;
+}
+@keyframes nt-breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+
+/* Reklam rozeti / uyarı kartı / seçim butonları: ince ışıklı kenar */
+.mp-ad-badge, .mp-ad-count { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 0 16px -8px rgba(255, 0, 170, 0.6); }
+.mp-skip-btn { box-shadow: var(--nt-bloom-cyan); }
+.mp-skip-btn:hover { filter: brightness(1.12); }
+.mp-notice-card { box-shadow: var(--nt-inner), 0 0 0 1px rgba(255, 192, 0, 0.18), 0 0 32px -10px rgba(255, 192, 0, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.mp-ask-panel { box-shadow: var(--nt-inner), var(--nt-bloom-cyan); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.mp-ask-btn.active { box-shadow: 0 0 0 1px rgba(0, 255, 136, 0.25), 0 0 18px -6px rgba(0, 255, 136, 0.6); }
+.movie-controls { background-image: linear-gradient(to top, rgba(4, 3, 8, 0.92), rgba(4, 3, 8, 0.55) 60%, transparent); }
+.movie-controls::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.35), transparent);
+}
+.movie-hd-tag { box-shadow: 0 0 12px -5px rgba(0, 229, 255, 0.7); }
+
+/* TV kanalları listesi: 27 kanal — kaydırılabilir, panel yüksekliği sabit kalır */
+.rail-list { max-height: 468px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(0, 229, 255, 0.35) transparent; }
+.rail-list::-webkit-scrollbar { width: 4px; }
+.rail-list::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.35); border-radius: 4px; }
+
+/* FPS sayacı — daha cam: arka plan görünür, yazı net */
+.fps-counter {
+  background: rgba(6, 4, 12, 0.22) !important;
+  border: 1px solid rgba(0, 255, 136, 0.35) !important;
+  backdrop-filter: blur(3px) saturate(1.2) !important; -webkit-backdrop-filter: blur(3px) saturate(1.2) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 16px -6px rgba(0, 255, 136, 0.55) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 0 8px rgba(0, 255, 136, 0.8) !important;
+}
+
+/* Hareket hassasiyeti: efektler kapanır, yerleşim aynı kalır */
+@media (prefers-reduced-motion: reduce) {
+  .bb-shell::before, .mp-lock-card, .mp-lock-icon, .hd2-live-dot, .mc2-livedot, .bo2-live-dot, .movie-title-dot, .mp-ad-dot, .rail-soon-dot, .mc2-filter-dot, .mp-turnstile-wait { animation: none !important; }
+}

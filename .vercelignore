@@ -1,0 +1,16 @@
+**/__pycache__/
+**/*.pyc
+**/.pytest_cache/
+**/node_modules/
+**/.next/
+_analysis/
+backend/tests/
+backend/media/
+backend/data/
+test_reports/
+tests/
+memory/
+frontend/
+.env
+.env.*
+*.log

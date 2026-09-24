@@ -1,0 +1,35 @@
+/* SITE GİRİŞ KAPISI — Turnstile "ben robot değilim" ekranı (Cloudflare interstitial estetiği, marka renkleri) */
+.sg {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(900px 480px at 15% 0%, rgba(170, 0, 255, 0.10), transparent 60%),
+    radial-gradient(800px 460px at 85% 100%, rgba(0, 229, 255, 0.07), transparent 60%),
+    var(--bg-void, #030205);
+  color: var(--ink-high, #f4f1ff);
+  animation: sg-in 0.35s ease both;
+}
+@keyframes sg-in { from { opacity: 0; } to { opacity: 1; } }
+.sg-card {
+  width: min(440px, 92vw);
+  padding: 30px 30px 22px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 229, 255, 0.28);
+  background: linear-gradient(165deg, rgba(20, 14, 34, 0.82), rgba(8, 6, 16, 0.94));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 0 28px rgba(0, 0, 0, 0.35),
+              0 0 0 1px rgba(0, 229, 255, 0.10), 0 0 46px -12px rgba(0, 229, 255, 0.45), 0 30px 80px -30px rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  text-align: left;
+}
+.sg-brand { display: flex; flex-direction: column; margin-bottom: 18px; }
+.sg-brand-main { font-family: var(--font-display, 'Oswald'), sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--pink, #ff00aa); text-shadow: 0 0 14px rgba(255, 0, 170, 0.45); line-height: 1; }
+.sg-brand-sub { font-family: var(--font-mono, monospace); font-size: 8.5px; letter-spacing: 3px; color: var(--cyan, #00e5ff); opacity: 0.8; margin-top: 4px; }
+.sg-title { font-family: var(--font-display, 'Oswald'), sans-serif; font-size: 17px; font-weight: 600; letter-spacing: 2.2px; color: var(--cyan, #00e5ff); text-shadow: 0 0 10px rgba(0, 229, 255, 0.45); margin-bottom: 8px; }
+.sg-text { margin: 0 0 16px; font-family: var(--font-mono, monospace); font-size: 11px; line-height: 1.6; color: var(--ink-mid, #beb7d1); }
+.sg-widget { min-height: 65px; margin-bottom: 8px; }
+.sg-widget .mp-turnstile { width: 100%; }
+.sg-status { font-family: var(--font-mono, monospace); font-size: 9.5px; letter-spacing: 1.6px; color: var(--cyan, #00e5ff); animation: sg-breathe 1.4s ease-in-out infinite; margin-top: 6px; }
+@keyframes sg-breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+.sg-err { margin-top: 8px; font-family: var(--font-mono, monospace); font-size: 10px; color: var(--red, #ff0040); border: 1px solid rgba(255, 0, 64, 0.35); border-radius: 6px; padding: 6px 9px; background: rgba(255, 0, 64, 0.06); }
+.sg-foot { display: flex; align-items: center; gap: 7px; margin-top: 18px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.07); font-family: var(--font-mono, monospace); font-size: 8.5px; letter-spacing: 1px; color: var(--ink-low, #857b9e); }
+.sg-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green, #00ff88); box-shadow: 0 0 8px var(--green, #00ff88); animation: nt-pulse 1.8s ease-out infinite; }

@@ -1,0 +1,26 @@
+{
+  "name": "banbansports UNDERGROUND HD",
+  "short_name": "banbansports",
+  "description": "Canlı maç skorları + HD yayın",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0510",
+  "theme_color": "#0a0510",
+  "lang": "tr",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/logos/full_ref.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logos/full_ref.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

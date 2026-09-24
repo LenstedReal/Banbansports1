@@ -1,0 +1,126 @@
+/* ============================================================
+   CANLI GİŞE + FİLM — KOMPAKT KOMPOZİSYON v3
+   Hero: backdrop belirgin (cam panel üstünde yazılar) · poster | bilgi + KONU/İZLE
+   Alt: CANLI GİŞE → KAYNAK → para birimi (5 eşit) → sistem (2 eşit) → 2x2 kart → artış hızı
+   ============================================================ */
+
+.cin3-hero {
+  position: relative; margin: 10px 10px 0; padding: 10px 11px 11px;
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background: #0a0712;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05),
+              0 0 0 1px rgba(255, 0, 170, 0.06), 0 0 34px -14px rgba(255, 0, 170, 0.35), 0 12px 30px -16px rgba(0, 0, 0, 0.8);
+}
+/* Backdrop: Spider-Man net görünür — bulanıklık yok, yüksek opaklık */
+.cin3-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 22%;
+  opacity: 0.92; filter: saturate(1.15) contrast(1.05); pointer-events: none;
+}
+.cin3-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(7, 5, 12, 0.22) 0%, transparent 20%, transparent 70%, rgba(7, 5, 12, 0.40) 100%);
+}
+
+/* üst şerit */
+.cin3-top { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; min-height: 22px; }
+.cin3-top .bo2-badges { margin: 0; gap: 8px; }
+.cin3-top .bo2-new-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px !important; border-radius: 6px !important; letter-spacing: 1.8px !important;
+  background-color: rgba(9, 6, 16, 0.62) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 14px -6px rgba(255, 0, 170, 0.6);
+}
+.cin3-new-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 8px var(--pink); }
+.cin3-top .cin2-imdb { padding: 4px 10px; font-size: 11px; background: rgba(9, 6, 16, 0.7); box-shadow: 0 0 14px -6px rgba(245, 197, 66, 0.6); }
+
+/* gövde */
+.cin3-body { position: relative; z-index: 2; display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; align-items: stretch; }
+.cin3-poster {
+  width: 104px; height: 100%; min-height: 152px; object-fit: cover; border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.65), 0 0 22px -8px rgba(0, 229, 255, 0.35);
+}
+/* Cam bilgi paneli — daha şeffaf: Spider-Man arkadan görünür, yazılar text-shadow ile net kalır */
+.cin3-mid {
+  display: flex; flex-direction: column; gap: 5px; min-width: 0;
+  padding: 10px 12px 11px; border-radius: 10px;
+  background: linear-gradient(180deg, rgba(9, 6, 16, 0.30), rgba(9, 6, 16, 0.42));
+  backdrop-filter: blur(5px) saturate(1.15); -webkit-backdrop-filter: blur(5px) saturate(1.15);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 0 1px rgba(0, 229, 255, 0.05), 0 0 24px -12px rgba(0, 229, 255, 0.35);
+}
+.cin3-mid .cin2-title { font-size: 16px; line-height: 1.25; letter-spacing: 0.6px; -webkit-line-clamp: 2; text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 2px 12px rgba(0, 0, 0, 0.95); }
+.cin3-en { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.6px; color: var(--ink-high); opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 0 8px rgba(0, 0, 0, 0.9); }
+.cin3-date { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.2px; color: var(--cyan); text-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 0 8px rgba(0, 229, 255, 0.4); }
+.cin3-date span { font-weight: 700; }
+.cin3-tags { flex-direction: row; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.cin3-tags .cin-tag {
+  display: inline-flex; padding: 5px 10px !important; border-radius: 6px; font-size: 9px !important; letter-spacing: 1px !important; font-weight: 700;
+  background-color: rgba(9, 6, 16, 0.82) !important; white-space: nowrap;
+}
+.cin3-tags .cin-tag.t-dub { box-shadow: 0 0 14px -6px rgba(0, 229, 255, 0.6); }
+.cin3-tags .cin-tag.t-sub { box-shadow: 0 0 14px -6px rgba(255, 192, 0, 0.6); }
+
+/* aksiyon satırı: KONU | İZLE */
+.cin3-actions { display: grid; grid-template-columns: minmax(84px, 0.9fr) minmax(0, 1.4fr); gap: 8px; margin-top: auto; padding-top: 8px; }
+.cin3-plot-chip {
+  display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+  padding: 8px 10px; border-radius: 7px;
+  border: 1px solid rgba(0, 229, 255, 0.35); background: rgba(9, 6, 16, 0.6);
+  color: var(--ink-high); font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  box-shadow: 0 0 14px -7px rgba(0, 229, 255, 0.6);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.cin3-plot-chip:hover { background: rgba(0, 229, 255, 0.10); border-color: rgba(0, 229, 255, 0.55); box-shadow: 0 0 20px -6px rgba(0, 229, 255, 0.7); }
+.cin3-chev { font-size: 8px; color: var(--cyan); }
+.cin3-watch { width: 100%; padding: 8px 14px !important; font-size: 12px !important; letter-spacing: 2.4px !important; justify-content: center; display: inline-flex; align-items: center; gap: 8px; }
+
+/* KONU açılır paneli — hero içinde tam alan (mevcut .cin2-plot) */
+.cin3-hero .cin2-plot { border-radius: 12px; z-index: 6; }
+
+/* ===== gişe verileri ===== */
+.cin3-stats-head { display: flex; align-items: center; gap: 10px; margin: 2px 0 6px; }
+.cin3-stats-head .bo2-live-badge {
+  color: var(--green) !important; border-color: rgba(0, 255, 136, 0.42) !important;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.5) !important; box-shadow: 0 0 14px -6px rgba(0, 255, 136, 0.6);
+  padding: 4px 11px !important; border-radius: 6px !important; letter-spacing: 1.8px !important;
+  background-color: rgba(9, 6, 16, 0.5) !important;
+}
+.cin3-stats-head .bo2-live-dot { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.cin3-stats-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(0, 255, 136, 0.45), rgba(0, 229, 255, 0.15) 50%, transparent); }
+/* KAYNAK — CANLI GİŞE'nin tam altında */
+.cin3-source { display: flex; align-items: baseline; gap: 8px; margin: 0 0 8px; padding: 0 2px; }
+.cin3-source-k { font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: 2px; color: var(--cyan); text-shadow: 0 0 8px rgba(0, 229, 255, 0.4); flex: 0 0 auto; }
+.cin3-source-v { text-align: left !important; font-size: 9.5px !important; opacity: 0.75 !important; line-height: 1.4; }
+
+.cin2-stats .bo2-tabs-row { display: flex !important; flex-direction: column; align-items: stretch; gap: 6px; padding: 0 !important; margin: 0 0 7px !important; border: 0 !important; background: transparent !important; }
+.cin2-stats .bo2-cur-tabs { display: grid !important; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 0 !important; }
+.cin2-stats .bo2-cur-tab {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 7px 6px !important; border-radius: 7px; font-size: 10.5px !important; letter-spacing: 1.2px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.cin2-stats .bo2-cur-tab.active { box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.15), 0 0 18px -6px rgba(0, 229, 255, 0.65) !important; }
+.cin2-stats .bo2-scope-tabs { display: grid !important; grid-template-columns: 1fr 1fr; gap: 6px; margin: 0 !important; }
+.cin2-stats .bo2-scope-tab {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 7px 8px !important; border-radius: 7px; font-size: 10px !important; letter-spacing: 1.2px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.cin2-stats .bo2-scope-tab.active { box-shadow: 0 0 0 1px rgba(255, 0, 170, 0.15), 0 0 18px -6px rgba(255, 0, 170, 0.65) !important; }
+
+.cin2-stats .bo2-main { grid-template-columns: 1fr 1fr !important; gap: 7px; margin-bottom: 7px !important; }
+.cin2-stats .bo2-block { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 0 0 1px rgba(255, 255, 255, 0.02), 0 0 24px -12px rgba(0, 229, 255, 0.35); }
+.cin2-stats .bo2-block:first-child { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 0 24px -12px rgba(0, 255, 136, 0.35); }
+.cin2-stats .bo2-value { font-size: 19px !important; letter-spacing: 0.3px !important; }
+/* 3 sütun: YEREL | ULUSLARARASI | ARTIŞ HIZI — boşluk yok */
+.cin2-stats .bo2-breakdown { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 7px; }
+.cin2-stats .bo2-bd { min-width: 0; }
+.cin2-stats .bo2-bd:nth-child(3) { grid-column: auto !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; justify-content: flex-start !important; gap: 0 !important; }
+.cin2-stats .bo2-bd-label { white-space: normal; line-height: 1.35; font-size: 8.5px !important; letter-spacing: 0.9px !important; }
+.cin2-stats .bo2-bd-value { font-size: 13px !important; letter-spacing: 0 !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.cin2-stats .bo2-bd:nth-child(3) .bo2-bd-value { font-size: 13px !important; }
+.cin2-stats .bo2-bd:nth-child(3) { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 0 24px -12px rgba(255, 0, 170, 0.45); }
